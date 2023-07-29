@@ -1,65 +1,92 @@
-// alert(1)
-// console.log("hello");
-// console.dir(document);
-// EXAMINE THE DOCUMENT OBJECT 
-// console.log(document.domain);
-// console.log(document.URL);
-// console.log(document.title);
-// console.log(document.doctype);
-// console.log(document.head);
-// console.log(document.body);
-// console.log(document.all);
-// console.log(document.all[10]);
-// // document.all[10].textContent='hello';
-// console.log(document.formss[0]);
-// console.log(document.links);
-// console.log(document.images);
-// GETELEMENTBYID  //
-// console.log(document.getElementById('header-title'));
-// var headerTitle=document.getElementById('header-title');
-// var header=document.getElementById('main-header');
-// console.log(headerTitle);
-// headerTitle.textContent='hello';
-// headerTitle.innerText='Goodboy';
-// console.log(headerTitle.textContent);
-// console.log(headerTitle.innerText);
-// headerTitle.innerHTML='<h3>Hello</h3>';
-// header.style.borderBottom='solid 3px #000';
-// GETELEMENTBYCLASSNAME  //
-// var items =document.getElementsByClassName('list-group-item');
-// console.log(items);
-// console.log(items[1]);
-// items[1].textContent='Hello 2';
-// items[1].style.backgroundcolor='yellow';
-// for(var i=0;i<items.length;i++)
-// {
-//     items[i].style.backgroundcolor='#f4f4f4';
-// }
+var form =document.getElementById('addForm');
+var itemList =document.getElementById('items');
+var filter =document.getElementById('filter');
+// Form submit event 
+form.addEventListener('submit', addItem)
 
-// GETELEMENTBYTAGNAME
-// var li =document.getElementsByTagName('li');
-// console.log(li);
-// console.log(li[1]);
-// li[1].textContent='Hello 2';
-// li[1].style.backgroundcolor='yellow';
-// for(var i=0;i<items.length;i++)
-// {
-//     li[i].style.backgroundcolor='#f4f4f4';
-// }
+// Delete event
+itemList.addEventListener('click',removeItem);
+
+// Filter event
+filter.addEventListener('keyup',filterItems);
+
+// Add item
+function addItem(e){
+
+    e.preventDefault();
+    
+    // Get input value
+    var newItem=document.getElementById('item').value;
+
+    // create new li element
+    var li=document.createElement('li')
+
+    // Add class
+    li.className='list-group-item';
+   
+    // Add text node with input value
+     li.appendChild(document.createTextNode(newItem));
+
+    //  Create del button element
+    var deleteBtn = document.createElement('button');
+
+    // Add classes to del button
+    deleteBtn.className="btn btn-danger btn-sm float-right delete";
+
+    // Append text node
+    deleteBtn.appendChild(document.createTextNode('X'));
+
+    var editBtn = document.createElement('button');
+
+    editBtn.className="btn btn-danger btn-sm float-right edit";
+
+    editBtn.appendChild(document.createTextNode('edit'));
 
 
+    // Append button to li
+    li.appendChild(deleteBtn);
+    li.appendChild(editBtn);
 
-var headerTitle=document.getElementById('header-title');
-//  headerTitle.style.borderBottom='solid 3px #000';
-//  var additem =document.getElementsByClassName('title')
-//  console.log(additem);
-//  additem[0].style.fontWeight='bold';
-//  additem[0].style.color='green';
- headerTitle.textContent='he'
- console.log(headerTitle);
- 
+    // Append li to list
+     itemList.appendChild(li);
+}
+
+// Remove item
+function removeItem(e){
+    if(e.target.classList.contains('delete')){
+        if(confirm('Are you sure')){ 
+            var li = e.target;
+            var c = li.parentElement;
+            itemList.removeChild(c);
+        }
+    }
+}
+
+//  Filter Items
+function filterItems(e)
+{
+    // convert text to lowercase
+    var tx = e.target;
+    var text = tx.value.toLowerCase();
+    // Go lis
+    var items = itemList.getElementsByTagName('li');
+    
+    console.log(items);
+
+    // convert to an array
+    Array.from(items).forEach(function(item){
+        var itemName=item.firstChild.textContent;
+        // console.log(itemName);
+
+        if(itemName.toLowerCase().indexOf(text)!=-1){
+             item.style.display='block';
+        }else{
+            item.style.display='none';
+        }
+
+    });
 
 
-
+}
 
 
